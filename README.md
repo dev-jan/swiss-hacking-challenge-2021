@@ -1,8 +1,11 @@
 # Swiss Cyber Hacking Challange 2021
 
+![logo](logo.png)
 
 Homepage: https://www.swiss-hacking-challenge.ch/
+
 Hacking-Lab: https://scs.hacking-lab.com/
+
 Discord: https://discord.gg/CWGzu3Ej86
 
 
