@@ -1,50 +1,20 @@
-"""A hack for skychat's roll command.
-Based on https://github.com/TACIXAT/XorShift128Plus.
-Works with Node.JS 10+. v10 has a different ToDouble() from v12+,
-which is way slower to crack with this method.
-Usage example :
-    # 6 inputs should be enough
-    $ python hack_rand.py 40400861 26920257 57439447 608722397 24329015 447108618
-    +---------------------+-----------+-------+------+
-    |        float        |   image   | guess | roll |
-    +---------------------+-----------+-------+------+
-    | 0.06023399323812351 |  60233993 |   60  |  7   |
-    |  0.3098338752246381 | 309833875 |  309  |  0   |
-    |  0.7580949674167554 | 758094967 |  758  |  4   |
-    |  0.9574229085595414 | 957422908 |  957  |  6   |
-    |  0.3330787878068444 | 333078787 |  333  |  0   |
-    | 0.16923076429504458 | 169230764 |  169  |  8   |
-    |  0.8990241997823878 | 899024199 |  899  |  5   |
-    |  0.3945494482569667 | 394549448 |  394  |  0   |
-    | 0.13085277487802682 | 130852774 |  130  |  8   |
-    |  0.5188443365850164 | 518844336 |  518  |  2   |
-    |  0.7920761627187354 | 792076162 |  792  |  4   |
-    | 0.02022102998018438 |  20221029 |   20  |  7   |
-    |  0.9006849720528429 | 900684972 |  900  |  6   |
-    | 0.11078071588793281 | 110780715 |  110  |  8   |
-    |  0.299550141383361  | 299550141 |  299  |  9   |
-    +---------------------+-----------+-------+------+
-Explanation :
-You can extract an important number of bits from Math.random() :
-https://github.com/skychatorg/skychat/blob/2094c1b3476731c9be3a0ba26f349ac0c76324e9/app/server/skychat/Server.ts#L111
-From there, we use z3 to get the seed of Node.JS's PRNG.
-Once we have the seed, we just need to generate random numbers with
-XorShift128's inverse function (because node buffers random numbers then
-reads then in inverse order), and you have the same results as the server. :)
-"""
 import struct
 import sys
+import requests
 from math import floor
+from prettytable import PrettyTable
 from z3 import *
 
+URL="https://ffe6b8f2-e574-4cbb-a99d-f8bef1a49528.idocker.vuln.land"
 
 MASK = 0xFFFFFFFFFFFFFFFF
 
 # ToDouble() changed with node 12.x.
-USE_OLD_TODOUBLE = True
+USE_OLD_TODOUBLE = False
 
 # 12 bits of mantissa et 29 missing bits
-SKYMASK = MASK & (MASK << 33) & (MASK >> 12)
+SKYMASK = MASK & (MASK << 52 - 9) & (MASK >> 12)
+print("SKYMASK=" + str("{0:b}".format(SKYMASK)))
 
 # Condition counter
 global_i = 0
@@ -122,9 +92,16 @@ def to_double(state0, state1):
 
 
 def predict_the_future(old_numbers):
-    dubs = [int(arg) / 10_000 for arg in old_numbers]
-    print(dubs)
+    dubs = [float(arg) / 10_000 for arg in old_numbers]
     dubs.reverse()
+
+    for dub in dubs:
+        generated = struct.unpack("<Q", struct.pack("d", dub + 1))[0] & SKYMASK
+        flooredDub = floor(dub * 10_000) / 10_000
+        generatedFlooredDub = struct.unpack("<Q", struct.pack("d", flooredDub + 1))[0] & SKYMASK
+        #print("dub = " + str(dub))
+        #print("generatedDub        = " + str("{0:b}".format(generated)))
+        #print("generatedFlooredDub = " + str("{0:b}".format(generatedFlooredDub)))
 
     # from the doubles, generate known piece of the original uint64
     generated = [struct.unpack("<Q", struct.pack("d", dub + 1))[0] & SKYMASK for dub in dubs]
@@ -147,21 +124,62 @@ def predict_the_future(old_numbers):
         state0 = m[ostate0].as_long()
         state1 = m[ostate1].as_long()
         slvr.add(Or(ostate0 != m[ostate0], ostate1 != m[ostate1]))
-        if slvr.check(conditions) == sat:
-            print("Multiple solutions found: add more inputs.")
+        #if slvr.check(conditions) == sat:
+        #    print("Multiple solutions found: add more inputs.")
+
+
 
         print(f"Solution found: state0 = {state0}, state1 = {state1}")
 
-        rands = []
+        output_table = PrettyTable(["next prediction"])
         # generate random numbers from recovered state
-        for idx in range(6):
+        for idx in range(7):
             state0, state1 = xs128p_backward(state0, state1)
             hacked_rand = to_double(state0, state1)
 
-            rands.append(floor(hacked_rand * 10_000))
+            output_table.add_row(
+                [
+                    floor(hacked_rand * 10_000)
+                ]
+            )
 
-        print(*rands, sep='\t')
+        print(output_table)
     else:
         print("No possible solution. Try other inputs or a different version...")
 
-predict_the_future(sys.argv[1:])
+def getSomeDubs():
+    dubs = []
+    # learning phase
+    for i in range(2):
+        print("====== ROUND " + str(i))
+        response = requests.post(URL + '/make_guess', json={"guess": [1, 1, 1, 1, 1, 1]})
+        content = response.content
+        values = str(content).split("[", 1)[1].split("]", 1)[0].split(",", 6)
+        dubs.extend(values)
+        print("New values: " + str(values))
+        print("dubs now: " + str(dubs))
+        predict_the_future(dubs)
+
+    response = requests.post(URL + '/make_guess', json={"guess": [1, 1, 1, 1, 1, 1]})
+
+def hacky():
+    state0 = 5395385508706694617
+    state1 = 13392189448733659106
+    print(f"Solution found: state0 = {state0}, state1 = {state1}")
+
+    output_table = PrettyTable(["next prediction"])
+    # generate random numbers from recovered state
+    for idx in range(12):
+        state0, state1 = xs128p_backward(state0, state1)
+        hacked_rand = to_double(state0, state1)
+
+        output_table.add_row(
+            [
+                floor(hacked_rand * 10_000)
+            ]
+        )
+
+    print(output_table)
+
+hacky()
+#getSomeDubs()
