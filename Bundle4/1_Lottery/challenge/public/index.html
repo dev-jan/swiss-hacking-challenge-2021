@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>The lottery</title>
+    <style>
+      html {
+        font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      }
+
+      ::selection {
+        color: black;
+        background: rgba(131,58,180,0.5);
+        }
+
+      body {
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 100vh;
+        padding: 0;
+        margin: 0;
+        font-weight: 700;
+
+        background: rgb(131,58,180);
+        background: linear-gradient(335deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
+
+      }
+
+      header {
+        padding:10vmin;
+        font-size: 5vw;
+      }
+
+      main {
+        flex-grow: 1;
+      }
+
+      footer {
+        width: calc(100% - 32px);
+        padding: 16px;
+      }
+
+      #lottery_form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      #lottery_form input {
+        width: 12vw;
+        font-size: 5vw;
+        border: none;
+        margin: 1vw;
+        color: white;
+        background-color: rgba(255,255,255,0.2);
+      }
+
+      #lottery_form button {
+        margin: 4vmin;
+        font-size: 4vw;
+        font-weight: 900;
+        background-color: transparent;
+        color: white;
+        border: 0.5vw solid white;
+        padding: 1vw;
+      }
+
+      #lottery_form button:hover {
+        background-color: rgba(255,255,255,0.4);
+      }
+
+      #answer {
+        text-align: center;
+        font-size: 3vw;
+        line-height: 2;
+
+      }
+
+
+
+    </style>
+  </head>
+  <body>
+    <header>Welcome to the lottery</header>
+    <main>
+      <form id="lottery_form">
+        <div class="numbers">
+          <input name="1" type="number" min="0" max="10000" />
+          <input name="2" type="number" min="0" max="10000" />
+          <input name="3" type="number" min="0" max="10000" />
+          <input name="4" type="number" min="0" max="10000" />
+          <input name="5" type="number" min="0" max="10000" />
+          <input name="6" type="number" min="0" max="10000" />
+        </div>
+        <button>WIN NOW!!!!</button>
+      </form>
+      <p id="answer"></p>
+  
+    </main>
+    
+    <footer>
+      <a download href="/challenge.zip">Download source</a>
+    </footer>
+  </body>
+
+  <script>
+    document.getElementById("lottery_form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const guess = [
+        parseInt(e.target[0].value) || 0,
+        parseInt(e.target[1].value) || 0,
+        parseInt(e.target[2].value) || 0,
+        parseInt(e.target[3].value) || 0,
+        parseInt(e.target[4].value) || 0,
+        parseInt(e.target[5].value) || 0,
+      ];
+      console.log(e, guess);
+
+      fetch("/make_guess", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ guess }),
+      })
+        .then((res) => res.text())
+        .then((txt) => (document.getElementById("answer").innerText = txt));
+    });
+  </script>
+</html>
