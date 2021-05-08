@@ -1,4 +1,4 @@
-# Hidden Data In PDF File
+# Hidden Data In PDF File (easy - 200 Points)
 
 ## Task
 The Swiss Hacking Challenge 2021 flyer flyer-shc2021_flag.pdf contains some hidden data.

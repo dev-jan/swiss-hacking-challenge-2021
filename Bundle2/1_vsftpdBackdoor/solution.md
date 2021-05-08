@@ -1,4 +1,4 @@
-# vsftpd Backdoor
+# vsftpd Backdoor (novice - 50 Points)
 
 ## Task
 An incident, we got alerted that a vsftpd download from the master site (vsftpd-2.3.4.tar.gz) appeared to contain a backdoor

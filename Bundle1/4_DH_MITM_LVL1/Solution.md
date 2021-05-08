@@ -1,4 +1,4 @@
-# DH MITM LVL1
+# DH MITM LVL1 (medium - 200 Points)
 
 ## Task
 In this crypto challenge, you play the role of a network level adversary and try to break a protocol based on the Diffie-Hellman key exchange protocol. Your hacker colleagues completely compromised the target network and gave you a simple tool to intercept, drop, and insert any packets in the network. Start this tool in the Resources section. It may take a moment until the website is accessible.

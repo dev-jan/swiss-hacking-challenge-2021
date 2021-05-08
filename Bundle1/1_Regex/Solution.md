@@ -1,4 +1,4 @@
-# Regexp Challenge
+# Regexp Challenge (novice - 50 Points)
 
 ## Task
 A regular expression (shortened as regex or regexp; also referred to as rational expression) is a sequence of characters that define a search pattern. It is a very important search technique and is used in almost any software.

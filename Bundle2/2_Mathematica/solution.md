@@ -1,4 +1,4 @@
-# Mathematica
+# Mathematica (easy - 100 Points)
 
 ## Task
 Are you good at math? For example linear algebra?

@@ -1,4 +1,4 @@
-# ssh backdoor analysis
+# ssh backdoor analysis (novice - 50 Points)
 
 ## Task
 This challenge is about analyzing a backdoored SSH service.

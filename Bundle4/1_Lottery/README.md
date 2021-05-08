@@ -1,4 +1,4 @@
-# The Lottery
+# The Lottery (medium - 200 Points)
 
 ## Task
 

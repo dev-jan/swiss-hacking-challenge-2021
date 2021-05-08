@@ -1,4 +1,4 @@
-# Self Service
+# Self Service (medium - 200 Points)
 
 ## Task
 This is a strange self service handing out certificates. Take a look!

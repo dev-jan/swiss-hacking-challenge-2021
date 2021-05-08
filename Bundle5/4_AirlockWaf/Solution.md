@@ -1,4 +1,4 @@
-# Airlock WAF
+# Airlock WAF (easy - 50 Points)
 
 ## Task
 

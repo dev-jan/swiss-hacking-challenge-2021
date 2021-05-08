@@ -1,4 +1,4 @@
-# CrackMe Simple
+# CrackMe Simple (easy - 100 Points)
 
 ## Task
 Objective: The password is somewhere hidden in this app. Extract it. The password is the flag.

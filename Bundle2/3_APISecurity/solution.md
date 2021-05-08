@@ -1,4 +1,4 @@
-# API Security
+# API Security (medium - 200 Points)
 
 ## Task
 API security is becoming more and more a target for hackers. Please hack the api service and disclose the flag /tmp/secret/flag.txt

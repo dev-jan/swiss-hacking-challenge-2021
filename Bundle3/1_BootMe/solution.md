@@ -1,4 +1,4 @@
-# BootMe by tttttx2
+# BootMe by tttttx2 (easy - 100 Points)
 
 ## Task
 No special tricks this time. No password needed for root, no fancy encryption, nothing. Just boot me. Easy as that. This is purely intended to teach you how to boot such systems and setup necessary network access.

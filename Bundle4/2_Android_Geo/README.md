@@ -1,4 +1,4 @@
-# Android App: Geo IP Restricted Login
+# Android App: Geo IP Restricted Login (medium - 200 Points)
 
 ## Task
 You must login into the app to get the flag. But be aware, the login is restricted to people located in Zermatt (CH) only. As the app trust all people in Zermatt, a 4 digit PIN will do.

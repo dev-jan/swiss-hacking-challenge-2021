@@ -1,4 +1,4 @@
-# Can I Hack Bank?
+# Can I Hack Bank? (medium - 200 Points)
 
 ## Task
 In this challenge, you will try to find and exploit a vulnerability in a web application.

@@ -1,4 +1,4 @@
-# ReadEEPROM by tttttx2
+# ReadEEPROM by tttttx2 (easy - 100 Points)
 
 ## Task
 

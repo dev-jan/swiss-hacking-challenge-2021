@@ -1,4 +1,4 @@
-# CrackMe Native
+# CrackMe Native (medium - 200 Points)
 
 ## Task
 This app holds a secret inside. The app is armored with "Anti-Hooking" protection.

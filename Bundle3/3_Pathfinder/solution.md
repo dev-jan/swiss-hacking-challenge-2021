@@ -1,4 +1,4 @@
-# Pathfinder
+# Pathfinder (easy - 100 Points)
 
 ## Task
 Reverse-Engineering of massive callgraphs
