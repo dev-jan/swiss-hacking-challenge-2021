@@ -44,6 +44,8 @@ Acknowledgment: This challenge has been created by _MH_ from the Swiss Hacking C
 
 # Solution
 
-TODO
+I was not able to solve this challenge during the CTF...
 
-maybe this helps? http://instantlogic.net/publications/DiffieHellman.pdf
+According to others the solution was kinda simple: Just use the value "1" as
+pubA to "force" the shared key to one. This makes it easy to read the conversation
+and also create new messages...

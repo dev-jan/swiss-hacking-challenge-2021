@@ -38,4 +38,8 @@ return dh_nrs.g, dh_nrs.p, dh_nrs.p - 1
 
 ## Solution
 
-TODO
+I was not able to solve this challenge during the CTF...
+
+The problem was that the parameter phi is not a prime number, but has some small
+factors. This makes the prime weak for a Pollard-Rho attack. The p in the protocol
+is create with "p = R*(phi) + 1" in the protocol.
